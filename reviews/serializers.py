@@ -15,9 +15,9 @@ class CreateReviewSerializer(serializers.Serializer):
     """
     Serilizer for Creating a Review
     """
-    title = serializers.CharField('Review Title', required=True)
-    text = serializers.CharField('Reivew Description', required=True)
-    stars = serializers.IntegerField('Review Stars', required=True)
+    title = serializers.CharField(label='Review Title', required=True)
+    text = serializers.CharField(label='Reivew Description', required=True)
+    stars = serializers.IntegerField(label='Review Stars', required=True)
 
     def save(self, user, tool):
         data = self.validated_data

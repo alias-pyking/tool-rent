@@ -40,3 +40,4 @@ class CreateReviewSerializer(serializers.Serializer):
             })
         if validation_errors:
             raise serializers.ValidationError(validation_errors)
+        return data

@@ -17,7 +17,6 @@ class Review(models.Model):
     title = models.CharField('Review Title', max_length=50, help_text=_('Determines type of review for tool: Good, Bad, Great... '))
     text = models.TextField('Review Description', help_text=_('Description of review'))
     stars = models.IntegerField('Stars', help_text=_('How will you rate this tool out of 5'), null=True, blank=True)
-    status = models.BooleanField('Status', help_text=_('Is this tool available right now or not ?'), default=False)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     def __str__(self):

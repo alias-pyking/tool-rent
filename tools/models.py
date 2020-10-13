@@ -6,6 +6,25 @@ from django.urls import reverse
 
 User = get_user_model()
 
+def upload_to_aws_s3(instance):
+    """
+    Upload images to s3 or azure static storage bucket
+    TODO: Will be imlemented later (after we buy s3 or azure static storage obviously )
+    """
+    pass
+
+class Picture(models.Model):
+    """
+    Purpose: This model will be used by other models for adding images
+    """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    image_alt_text = models.CharField('Alt Text for image', max_length=50)
+    image = models.ImageField("Picture", upload_to=upload_to_aws_s3)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    def __str__(self):
+        return str(self.image_alt_text)
 
 class Tool(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)

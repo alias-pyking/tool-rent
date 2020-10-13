@@ -12,6 +12,10 @@ from rest_framework import status
 User = get_user_model()
 
 
+"""
+TODO: Adding permission and authentication classes to all these views.
+"""
+
 class ListTools(ListAPIView):
     serializer_class = ListToolSerializer
     queryset = Tool.objects.all()

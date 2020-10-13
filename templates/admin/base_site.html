@@ -1,0 +1,5 @@
+{% extends 'admin/base_site.html' %}
+{%  load i18n %}
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_headers|default:'ToolRent Admin' }}</a> </h1>
+{% endblock %}

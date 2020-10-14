@@ -3,16 +3,18 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+import os
+
 
 User = get_user_model()
 
-# def upload_to_aws_s3(instance):
-#     """
-#     Upload images to s3 or azure static storage bucket
-#     TODO: Will be imlemented later (after we buy s3 or azure static storage obviously )
-#     """
-#     pass
-
+def upload_to_aws_s3(instance, filename):
+    """
+    Upload images in media/tools/ dir in s3 bucket
+    """
+    return 'tools/'+ filename
+    
 class Picture(models.Model):
     """
     Purpose: This model will be used by other models for adding images
@@ -20,7 +22,7 @@ class Picture(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     image_alt_text = models.CharField('Alt Text for image', max_length=50)
-    image = models.ImageField("Picture")
+    image = models.ImageField("Picture", upload_to=upload_to_aws_s3, null=True, blank=True, help_text=_('Add Image'))
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     def __str__(self):

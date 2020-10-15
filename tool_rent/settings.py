@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     # local
     'tools.apps.ToolsConfig',
     'reviews.apps.ReviewsConfig',
+    'users.apps.UsersConfig',
 
     # Third party
+    'corsheaders',
     'rest_framework',
     'bootstrap_admin',
 
@@ -62,6 +64,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,6 +140,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+# STATIC FILES ON AWS S3
 
 STATIC_URL = '/static/'
 
@@ -168,3 +172,9 @@ STATICFILES_STORAGE = 'tool_rent.storage_backends.StaticStorage'
 DEFAULT_FILE_STORAGE = 'tool_rent.storage_backends.MediaStorage'
 
 
+# CORS CONFIGS
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
+    'http://localhost:3000'
+]

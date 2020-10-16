@@ -18,6 +18,7 @@ TODO: Adding permission and authentication classes to all these views.
 
 class ListTools(ListAPIView):
     serializer_class = ListToolSerializer
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Tool.objects.all()
 
 

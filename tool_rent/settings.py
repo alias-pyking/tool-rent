@@ -46,10 +46,17 @@ INSTALLED_APPS = [
     # Third party
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+
     'bootstrap_admin',
 
     # Django
-
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,6 +147,26 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Custom UserModel and AUTH configs
+
+AUTH_USER_MODEL = 'users.User'
+SITE_ID = 1
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'admin@keepborrowuse.com'
+# rest_framework token auth configs
+
+REST_FRAMEWORK  = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+
+
+
 # STATIC FILES ON AWS S3
 
 STATIC_URL = '/static/'
@@ -178,3 +205,4 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
     'http://localhost:3000'
 ]
+

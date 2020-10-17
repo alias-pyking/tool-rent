@@ -24,6 +24,7 @@ def tool_response(tool):
         'description':tool.description,
         'quantity': tool.quantity,
         'cost': tool.cost,
+        'status':tool.status,
         'timestamp':tool.timestamp,
         'updated_on':tool.updated_on
     })

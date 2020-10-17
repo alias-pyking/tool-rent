@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from .models import Tool
-
+from .constants import STATUS_CHOICES
 
 class ListToolSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField(method_name='get_reviews_url')
     class Meta:
         model = Tool
-        fields = ['id', 'user', 'name', 'description', 'quantity', 'cost', 'timestamp', 'updated_on', 'reviews']
+        fields = ['id', 'user', 'name', 'description', 'quantity', 'cost','status', 'timestamp', 'updated_on', 'reviews']
     
     def get_user(self, obj):
         return obj.user.username
@@ -19,6 +19,7 @@ class ListToolSerializer(serializers.ModelSerializer):
 class CreateUpdateToolSerializer(serializers.Serializer):
     name = serializers.CharField(label='Name', required=True)
     description = serializers.CharField(label='Description', required=True)
+    status = serializers.ChoiceField(label='Status', choices=STATUS_CHOICES, required=True)
     quantity = serializers.IntegerField(label='Quantity',required=True)
     cost = serializers.DecimalField(max_digits=10,decimal_places=2)
 
@@ -33,6 +34,7 @@ class CreateUpdateToolSerializer(serializers.Serializer):
         instance.description = validated_data.get('description', instance.description)
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.cost = validated_data.get('cost', instance.cost)
+        instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
 

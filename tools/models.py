@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 import os
+from .constants import STATUS_CHOICES
 
 
 User = get_user_model()
@@ -35,7 +36,7 @@ class Tool(models.Model):
     description = models.TextField(verbose_name='Description')
     quantity = models.IntegerField(verbose_name='Quantity', help_text='How many of these you have ?', null=True, blank=True)
     cost = models.DecimalField(verbose_name='Price of the Tool',max_digits=10, decimal_places=4)
-    status = models.BooleanField('Status', help_text=_('Is this tool available right now or not ?'), default=False)
+    status = models.CharField('Status',choices=STATUS_CHOICES, max_length=40, help_text=_('Is this tool available right now or not ?'), null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 

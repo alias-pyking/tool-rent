@@ -15,22 +15,22 @@ from rest_framework import status
 
 class VerifyEmailView(APIView, ConfirmEmailView):
     permission_classes = (AllowAny,)
-    allowed_methods = ('POST', 'OPTIONS', 'HEAD')
+    allowed_methods = ('GET', 'OPTIONS', 'HEAD')
 
     def get_serializer(self, *args, **kwargs):
         return VerifyEmailSerializer(*args, **kwargs)
 
-    def get(self, *args, **kwargs):
-        print('here')
-        raise MethodNotAllowed('GET')
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def get(self, request, *args, **kwargs):
+        key = kwargs['key']
+        data = {
+            'key':key
+        }
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.kwargs['key'] = serializer.validated_data['key']
         confirmation = self.get_object()
         confirmation.confirm(self.request)
-        return Response({'detail': _('ok')}, status=status.HTTP_200_OK)
+        return Response({'detail': _('ok'), 'message':_('Confirmed')}, status=status.HTTP_200_OK)
 
 # class RegisterAPIView(APIView):
 #     methods = 

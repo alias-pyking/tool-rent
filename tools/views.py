@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from rest_framework.generics import RetrieveAPIView, ListAPIView, DestroyAPIView, UpdateAPIView, CreateAPIView
 from rest_framework import permissions
-from .serializers import ListToolSerializer, EditToolSerializer, CreateUpdateToolSerializer
+from .serializers import ListToolSerializer, CreateUpdateToolSerializer
 from .models import Tool
 from rest_framework.response import Response
 from .utils import get_tool_or_none, tool_response
 from rest_framework import status
+from .permissions import IsAuthorOrReadOnly
 
 User = get_user_model()
 
@@ -17,23 +18,25 @@ TODO: Adding permission and authentication classes to all these views.
 
 class ListTools(ListAPIView):
     serializer_class = ListToolSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     queryset = Tool.objects.all()
 
 
 class ToolDetail(RetrieveAPIView):
     serializer_class = ListToolSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     queryset = Tool.objects.all()
 
 
 class DeleteTool(DestroyAPIView):
     serializer_class = ListToolSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
     queryset = Tool.objects.all()
 
 
 class EditTool(UpdateAPIView):
     serializer_class = CreateUpdateToolSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
 
     def post(self, request, *args, **kwargs):
         serializer = CreateUpdateToolSerializer(data=request.data)
@@ -52,8 +55,7 @@ class EditTool(UpdateAPIView):
 
 class CreateTool(CreateAPIView):
     serializer_class = CreateUpdateToolSerializer
-
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         serializer = CreateUpdateToolSerializer(data=request.data)

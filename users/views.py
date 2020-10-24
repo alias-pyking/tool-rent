@@ -25,7 +25,3 @@ class VerifyEmailView(APIView, ConfirmEmailView):
         confirmation = self.get_object()
         confirmation.confirm(self.request)
         return Response({'detail': _('ok'), 'message': _('Confirmed')}, status=status.HTTP_200_OK)
-
-# class RegisterAPIView(APIView):
-#     methods = 
-#     def post(self, request, *args, **kwargs):

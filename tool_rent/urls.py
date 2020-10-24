@@ -15,11 +15,8 @@ urlpatterns = [
     path('tools/', include('reviews.urls')),    
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
-    # re_path(r'auth/registration/account-confirm-email/', VerifyEmailView.as_view(),
-    #         name='account_email_verification_sent'),
-    # re_path(r'auth/registration/account-confirm-email/(?P<key>[-:\w]+)/', VerifyEmailView.as_view(),
-    #         name='account_confirm_email')
-    re_path('rest-auth/registration/account-confirm-email/(?P<key>.+)/', VerifyEmailView.as_view(), name='account_confirm_email'),
+    re_path('rest-auth/registration/account-confirm-email/(?P<key>.+)/', VerifyEmailView.as_view(),
+            name='account_confirm_email'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

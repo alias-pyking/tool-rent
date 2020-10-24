@@ -6,7 +6,7 @@ class ToolAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'user', 'description','status', 'quantity', 'cost')
+            'fields': ('name', 'user','images', 'description','status', 'quantity', 'cost')
         }),
     )
 

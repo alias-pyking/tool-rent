@@ -24,6 +24,7 @@ class ListTools(ListAPIView):
 
 class ToolDetail(RetrieveAPIView):
     serializer_class = ListToolSerializer
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Tool.objects.all()
     
 

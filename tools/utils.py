@@ -21,6 +21,7 @@ def tool_response(tool):
         'id':tool.id,
         'user':tool.user.username,
         'name': tool.name,
+        'images':[img.image.url for img in tool.images.all()],
         'description':tool.description,
         'quantity': tool.quantity,
         'cost': tool.cost,

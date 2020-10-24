@@ -37,11 +37,14 @@ class EditTool(UpdateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = CreateUpdateToolSerializer(data=request.data)
+        images = request.data.getlist('images')
+        if images is None or images[0] != '':
+            images = None
         if serializer.is_valid(raise_exception=True):
             tool_pk = kwargs['pk']
             tool = get_tool_or_none(pk=tool_pk)
             if tool:
-                tool = serializer.update(tool, serializer.validated_data)
+                tool = serializer.update(tool, serializer.validated_data, images=images)
                 return tool_response(tool)
             else:
                 return Response(data={"detail": "Tool not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -54,6 +57,11 @@ class CreateTool(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = CreateUpdateToolSerializer(data=request.data)
+        images = request.data.getlist('images')
+
+        if images is None or images[0] == '':
+            return Response(data=[{'images': 'This field is required'}])
+
         if serializer.is_valid(raise_exception=True):
-            tool = serializer.save(user=User.objects.get(id=1))
+            tool = serializer.save(user=User.objects.get(id=1), images=images)
             return tool_response(tool)

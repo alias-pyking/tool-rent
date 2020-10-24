@@ -39,7 +39,7 @@ class Tool(models.Model):
     cost = models.DecimalField(verbose_name='Price of the Tool', max_digits=10, decimal_places=4)
     status = models.CharField('Status', choices=STATUS_CHOICES, max_length=40,
                               help_text=_('Is this tool available right now or not ?'), null=True, blank=True)
-    images = models.ManyToManyField(Picture, help_text=_('Images of this tool.'), blank=False)
+    images = models.ManyToManyField(Picture, help_text=_('Images of this tool.'), blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 

@@ -1,7 +1,7 @@
 from abc import ABC
 
 from rest_framework import serializers
-from .models import Tool
+from .models import Tool, Picture
 from .constants import STATUS_CHOICES
 from django.forms.widgets import ClearableFileInput
 
@@ -27,27 +27,45 @@ class ListToolSerializer(serializers.ModelSerializer):
         return [img.image.url for img in obj.images.all()]
 
 
-class CreateUpdateToolSerializer(serializers.Serializer, ABC):
+class CreateUpdateToolSerializer(serializers.Serializer):
     name = serializers.CharField(label='Name', required=True)
     description = serializers.CharField(label='Description', required=True)
     status = serializers.ChoiceField(label='Status', choices=STATUS_CHOICES, required=True)
     quantity = serializers.IntegerField(label='Quantity', required=True)
     cost = serializers.DecimalField(max_digits=10, decimal_places=2)
-    images = serializers.ImageField(label='Images', attrs={'many': True})
 
-    def save(self, user):
-        data = self.validated_data
-        tool = Tool.objects.create(**data, user=user)
-        tool.save()
+    def create(self, validated_data, **kwargs):
+        tool = Tool(**validated_data, user=kwargs['user'])
         return tool
 
-    def update(self, instance, validated_data):
+    @staticmethod
+    def create_pictures(images):
+        pictures = []
+        for pic in images:
+            pictures.append(Picture(image=pic, image_alt_text=pic.name))
+        return pictures
+
+    def save(self, user, images=None):
+        data = self.validated_data
+        tool = self.create(data, user=user)
+        tool.save()
+        pictures = self.create_pictures(images=images)
+        Picture.objects.bulk_create(pictures)
+        tool.images.add(*pictures)
+
+        return tool
+
+    def update(self, instance, validated_data, images=None):
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.cost = validated_data.get('cost', instance.cost)
         instance.status = validated_data.get('status', instance.status)
         instance.save()
+        if images:
+            pictures = self.create_pictures(images=images)
+            Picture.objects.bulk_create(pictures)
+            instance.images.add(*pictures)
         return instance
 
     def validate(self, data):

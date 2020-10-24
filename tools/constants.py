@@ -1,6 +1,4 @@
-
-
 STATUS_CHOICES = (
-    ('available','Available'),
-    ('not_available',"Not available"),
+    ('available', 'Available'),
+    ('not_available', "Not available"),
 )

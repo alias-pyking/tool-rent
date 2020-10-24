@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import ListTools, ToolDetail, CreateTool, DeleteTool, EditTool
 
-
 urlpatterns = [
     path('', ListTools.as_view(), name='tools-list'),
     path('add/', CreateTool.as_view(), name='tool-add'),

@@ -8,13 +8,12 @@ from rest_framework.response import Response
 from .utils import get_tool_or_none, tool_response
 from rest_framework import status
 
-
 User = get_user_model()
-
 
 """
 TODO: Adding permission and authentication classes to all these views.
 """
+
 
 class ListTools(ListAPIView):
     serializer_class = ListToolSerializer
@@ -26,7 +25,7 @@ class ToolDetail(RetrieveAPIView):
     serializer_class = ListToolSerializer
     permission_classes = [permissions.IsAuthenticated]
     queryset = Tool.objects.all()
-    
+
 
 class DeleteTool(DestroyAPIView):
     serializer_class = ListToolSerializer
@@ -45,10 +44,12 @@ class EditTool(UpdateAPIView):
                 tool = serializer.update(tool, serializer.validated_data)
                 return tool_response(tool)
             else:
-                return Response(data={"detail":"Tool not found"}, status=status.HTTP_404_NOT_FOUND)
+                return Response(data={"detail": "Tool not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class CreateTool(CreateAPIView):
     serializer_class = CreateUpdateToolSerializer
+
     # permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -56,6 +57,3 @@ class CreateTool(CreateAPIView):
         if serializer.is_valid(raise_exception=True):
             tool = serializer.save(user=User.objects.get(id=1))
             return tool_response(tool)
-
-
-

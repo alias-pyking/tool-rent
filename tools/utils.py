@@ -11,21 +11,21 @@ def get_tool_or_none(pk):
     """
     try:
         tool = Tool.objects.get(id=str(pk))
-    except:
+    except Tool.DoesNotExist:
         tool = None
     return tool
 
 
 def tool_response(tool):
     return Response({
-        'id':tool.id,
-        'user':tool.user.username,
+        'id': tool.id,
+        'user': tool.user.username,
         'name': tool.name,
-        'images':[img.image.url for img in tool.images.all()],
-        'description':tool.description,
+        'images': [img.image.url for img in tool.images.all()],
+        'description': tool.description,
         'quantity': tool.quantity,
         'cost': tool.cost,
-        'status':tool.status,
-        'timestamp':tool.timestamp,
-        'updated_on':tool.updated_on
+        'status': tool.status,
+        'timestamp': tool.timestamp,
+        'updated_on': tool.updated_on
     })

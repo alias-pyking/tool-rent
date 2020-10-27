@@ -30,13 +30,13 @@ class ToolDetail(RetrieveAPIView):
 
 class DeleteTool(DestroyAPIView):
     serializer_class = ListToolSerializer
-    permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
     queryset = Tool.objects.all()
 
 
 class EditTool(UpdateAPIView):
     serializer_class = CreateUpdateToolSerializer
-    permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticated, IsAuthorOrReadOnly]
 
     def post(self, request, *args, **kwargs):
         serializer = CreateUpdateToolSerializer(data=request.data)
@@ -55,7 +55,7 @@ class EditTool(UpdateAPIView):
 
 class CreateTool(CreateAPIView):
     serializer_class = CreateUpdateToolSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         serializer = CreateUpdateToolSerializer(data=request.data)

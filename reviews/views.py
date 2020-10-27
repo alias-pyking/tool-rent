@@ -1,4 +1,3 @@
-
 from tools.utils import get_tool_or_none
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,6 +5,7 @@ from rest_framework import status
 from .serializers import ReviewSerializer, CreateReviewSerializer
 from rest_framework.generics import ListAPIView, CreateAPIView
 from .utils import review_response
+
 
 class ListReviews(ListAPIView):
     """
@@ -23,11 +23,13 @@ class ListReviews(ListAPIView):
             serializer = ReviewSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(data={'detail':'Tool with id {} not found'.format(tool_pk)}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data={'detail': 'Tool with id {} not found'.format(tool_pk)},
+                            status=status.HTTP_404_NOT_FOUND)
+
 
 class CreateReview(CreateAPIView):
     """
-    Creates a review for a partiuclar product
+    Creates a review for a particular product
     TODO: Add Authentication and permission classes(Will have to write one)
     """
     serializer_class = CreateReviewSerializer
@@ -41,13 +43,4 @@ class CreateReview(CreateAPIView):
                 review = serializer.save(user=request.user, tool=tool)
                 return review_response(review)
         else:
-            return Response(data={'detail':'Tool with id {} not found'.format(tool_pk)})
-
-
-        
-
-
-
-
-
-
+            return Response(data={'detail': 'Tool with id {} not found'.format(tool_pk)})

@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import environ
-
+import django_heroku
 env = environ.Env(
     DEBUG=(bool, False)
 )
@@ -109,7 +109,7 @@ DATABASES = {
         'NAME': 'tool_rent',
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST':'localhost',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
@@ -169,8 +169,6 @@ REST_FRAMEWORK  = {
 
 # STATIC FILES ON AWS S3
 
-STATIC_URL = '/static/'
-
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'sk-django-static-s3'
@@ -201,8 +199,9 @@ DEFAULT_FILE_STORAGE = 'tool_rent.storage_backends.MediaStorage'
 
 # CORS CONFIGS
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
-    'http://localhost:3000'
-]
+CORS_ALLOWED_ORIGINS = (
+    'http://localhost:3000',
+)
+
+django_heroku.settings(locals())
 

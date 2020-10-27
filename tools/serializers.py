@@ -10,6 +10,7 @@ class ListToolSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField(method_name='get_reviews_url')
     images = serializers.SerializerMethodField()
+    # ratings = serializers.SerializerMethodField()
 
     class Meta:
         model = Tool
@@ -25,6 +26,9 @@ class ListToolSerializer(serializers.ModelSerializer):
 
     def get_images(self, obj):
         return [img.image.url for img in obj.images.all()]
+
+    def get_rating(self, obj):
+        pass
 
 
 class CreateUpdateToolSerializer(serializers.Serializer):

@@ -192,6 +192,11 @@ DEFAULT_FILE_STORAGE = 'tool_rent.storage_backends.MediaStorage'
 CORS_ALLOWED_ORIGINS = (
     'http://localhost:3000',
 )
+# Authentication backends
+
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
 
 django_heroku.settings(locals())
 db_from_env = dj_database_url.config(conn_max_age=500)

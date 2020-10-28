@@ -101,8 +101,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'tool_rent',
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'USER': os.environ['TOOL_RENT_DATABASE_USER'],
+        'PASSWORD': os.environ['TOOL_RENT_DATABASE_PASSWORD'],
         'HOST': 'localhost',
         'PORT': '',
     }

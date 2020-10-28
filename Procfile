@@ -1,1 +1,1 @@
-web: gunicorn tool_rent.wsgi
+web: gunicorn tool_rent.wsgi --log-file -

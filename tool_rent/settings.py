@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ['TOOL_RENT_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
+DEBUG = True
 
 ALLOWED_HOSTS = ['herokuapp.com', 'localhost']
 
@@ -159,8 +159,8 @@ REST_FRAMEWORK  = {
 
 # STATIC FILES ON AWS S3
 
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_ACCESS_KEY_ID = os.environ['TOOL_RENT_AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['TOOL_RENT_AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = 'sk-django-static-s3'
 
 AWS_S3_CUSTOM_DOMAIN = '{}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)

@@ -7,7 +7,7 @@ def upload_profile(instance, filename):
     """
     Upload images in media/tools/ dir in s3 bucket
     """
-    return 'profile_pics/{0}'.format(instance.user.username) + filename
+    return 'profile_pics/{0}/'.format(instance.user.username) + filename
 
 
 class User(AbstractUser):

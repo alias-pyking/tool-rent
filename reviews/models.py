@@ -11,7 +11,7 @@ User = get_user_model()
 class Review(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    tool = models.ForeignKey(Tool, on_delete=models.CASCADE)
+    tool = models.ForeignKey(Tool, on_delete=models.CASCADE, related_name='reviews')
     title = models.CharField('Review Title', max_length=50,
                              help_text=_('Determines type of review for tool: Good, Bad, Great... '))
     text = models.TextField('Review Description', help_text=_('Description of review'))

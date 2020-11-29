@@ -50,4 +50,4 @@ class Tool(models.Model):
         return reverse('tool-detail', kwargs={'pk': self.id})
 
     def get_reviews_url(self):
-        return reverse('reviews-list', kwargs={'tool_pk': self.id})
+        return reverse('reviews-list', kwargs={'tool_id': self.id})

@@ -3,27 +3,16 @@ from .models import Review
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    """
-    Serializer for listing Reviews of a Tool/Product
-    or getting a Review
-    """
     user = serializers.SerializerMethodField()
+    stars = serializers.IntegerField(required=True)
 
     class Meta:
         model = Review
-        exclude = ['tool']
+        exclude = ('tool', )
 
-    def get_user(self, obj):
+    @staticmethod
+    def get_user(obj):
         return obj.user.username
-
-
-class CreateReviewSerializer(serializers.Serializer):
-    """
-    Serializer for Creating a Review
-    """
-    title = serializers.CharField(label='Review Title', required=True)
-    text = serializers.CharField(label='Review Description', required=True)
-    stars = serializers.IntegerField(label='Review Stars', required=True)
 
     def create(self, validated_data, **kwargs):
         review = Review(user=kwargs['user'], tool=kwargs['tool'], **validated_data)
@@ -35,18 +24,14 @@ class CreateReviewSerializer(serializers.Serializer):
         return review
 
     def update(self, instance, validated_data):
-        pass
+        raise NotImplemented('Please come and implement this method first before calling it.')
 
     def validate(self, data):
         """
-        Object level validation for CreateSerializer(obviously)
+        Object level validation for ReviewSerializer(obviously)
         """
         validation_errors = {}
-        if data.get('stars') is None or data.get('stars') == '':
-            validation_errors.update({
-                'stars': 'This field is required',
-            })
-        elif int(data.get('stars')) > 5:
+        if int(data.get('stars')) > 5:
             validation_errors.update({
                 'stars': 'Stars cannot have a value greater than 5'
             })

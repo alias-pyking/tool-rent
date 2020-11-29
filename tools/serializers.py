@@ -6,7 +6,7 @@ from .constants import STATUS_CHOICES
 from django.forms.widgets import ClearableFileInput
 
 
-class ListToolSerializer(serializers.ModelSerializer):
+class ToolSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField(method_name='get_reviews_url')
     images = serializers.SerializerMethodField()
@@ -14,33 +14,23 @@ class ListToolSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tool
-        fields = ['id', 'user', 'name', 'description', 'quantity', 'cost', 'images', 'status', 'timestamp',
-                  'updated_on',
-                  'reviews']
+        fields = '__all__'
 
-    def get_user(self, obj):
+    @staticmethod
+    def get_user(obj):
         return obj.user.username
 
-    def get_reviews_url(self, obj):
+    @staticmethod
+    def get_reviews_url(obj):
         return obj.get_reviews_url()
 
-    def get_images(self, obj):
+    @staticmethod
+    def get_images(obj):
         return [img.image.url for img in obj.images.all()]
 
-    def get_rating(self, obj):
+    @staticmethod
+    def get_rating(obj):
         pass
-
-
-class CreateUpdateToolSerializer(serializers.Serializer):
-    name = serializers.CharField(label='Name', required=True)
-    description = serializers.CharField(label='Description', required=True)
-    status = serializers.ChoiceField(label='Status', choices=STATUS_CHOICES, required=True)
-    quantity = serializers.IntegerField(label='Quantity', required=True)
-    cost = serializers.DecimalField(max_digits=10, decimal_places=2)
-
-    def create(self, validated_data, **kwargs):
-        tool = Tool(**validated_data, user=kwargs['user'])
-        return tool
 
     @staticmethod
     def create_pictures(images):
@@ -49,17 +39,22 @@ class CreateUpdateToolSerializer(serializers.Serializer):
             pictures.append(Picture(image=pic, image_alt_text=pic.name))
         return pictures
 
-    def save(self, user, images=None):
+    def create(self, validated_data, **kwargs):
+        tool = Tool(**validated_data, user=kwargs['user'])
+        return tool
+
+    def save(self, user, **kwargs):
         data = self.validated_data
+        images = self.custom_validate(**kwargs)
         tool = self.create(data, user=user)
         tool.save()
         pictures = self.create_pictures(images=images)
         Picture.objects.bulk_create(pictures)
         tool.images.add(*pictures)
-
         return tool
 
-    def update(self, instance, validated_data, images=None):
+    def update(self, instance, validated_data, **kwargs):
+        images = self.custom_validate(update=True, **kwargs)
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
         instance.quantity = validated_data.get('quantity', instance.quantity)
@@ -71,6 +66,18 @@ class CreateUpdateToolSerializer(serializers.Serializer):
             Picture.objects.bulk_create(pictures)
             instance.images.add(*pictures)
         return instance
+
+    @staticmethod
+    def custom_validate(update=False, **kwargs):
+        try:
+            images = kwargs['images']
+        except KeyError:
+            raise AttributeError('Tool serializer requires you to pass images as kwargs in update and save methods')
+        if len(images) == 0 and not update:
+            raise serializers.ValidationError({
+                'images':['This field is required']
+            })
+        return images
 
     def validate(self, data):
         validation_errors = {}
@@ -97,8 +104,3 @@ class CreateUpdateToolSerializer(serializers.Serializer):
             raise serializers.ValidationError(validation_errors)
         return data
 
-
-class EditToolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tool
-        fields = ['name', 'description', 'quantity', 'cost', 'timestamp', 'updated_on']

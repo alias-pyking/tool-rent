@@ -19,7 +19,7 @@ class ListReviews(ListAPIView):
         tool_pk = str(kwargs['tool_pk'])
         tool = get_tool_or_none(pk=tool_pk)
         if tool:
-            queryset = tool.review_set.all()
+            queryset = tool.review_set.select_related('user').all()
             serializer = ReviewSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:

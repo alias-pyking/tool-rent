@@ -7,10 +7,14 @@ class ReviewSerializer(serializers.ModelSerializer):
     Serializer for listing Reviews of a Tool/Product
     or getting a Review
     """
+    user = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
         exclude = ['tool']
+
+    def get_user(self, obj):
+        return obj.user.username
 
 
 class CreateReviewSerializer(serializers.Serializer):

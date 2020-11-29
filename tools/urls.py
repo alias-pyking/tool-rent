@@ -1,10 +1,7 @@
 from django.urls import path
-from .views import ListTools, ToolDetail, CreateTool, DeleteTool, EditTool
+from .views import ListCreateToolsView, RetrieveUpdateDeleteToolView
 
 urlpatterns = [
-    path('', ListTools.as_view(), name='tools-list'),
-    path('add/', CreateTool.as_view(), name='tool-add'),
-    path('<uuid:pk>/', ToolDetail.as_view(), name='tool-detail'),
-    path('<uuid:pk>/edit/', EditTool.as_view(), name='tool-edit'),
-    path('<uuid:pk>/delete/', DeleteTool.as_view(), name='tool-delete'),
+    path('', ListCreateToolsView.as_view(), name='list-create-tools'),
+    path('<uuid:tool_id>/', RetrieveUpdateDeleteToolView.as_view(), name='get-update-delete-tool')
 ]

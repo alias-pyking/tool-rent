@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'tools.apps.ToolsConfig',
     'reviews.apps.ReviewsConfig',
     'users.apps.UsersConfig',
+    'transactions.apps.TransactionsConfig',
 
     # Third party
     'corsheaders',

@@ -17,6 +17,7 @@ urlpatterns = [
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     re_path('rest-auth/registration/account-confirm-email/(?P<key>.+)/', VerifyEmailView.as_view(),
             name='account_confirm_email'),
+    path('', include('users.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

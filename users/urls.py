@@ -1,5 +1,7 @@
 from django.urls import path
+from .views import DetailUpdateProfileView
 
-# urlpatterns = [
-#     path('api/auth/login')
-# ]
+urlpatterns = [
+    path('profile/<str:username>/', DetailUpdateProfileView.as_view(), name='profile')
+]
+

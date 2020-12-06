@@ -6,15 +6,24 @@ from .models import Tool
 from rest_framework.response import Response
 from rest_framework import status
 from .permissions import IsAuthorOrReadOnly
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django.db.models import Q
 
 User = get_user_model()
 
 
 class ListCreateToolsView(ListCreateAPIView):
     serializer_class = ToolSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
-    queryset = Tool.objects.all().select_related('user').prefetch_related('images')
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        q = self.request.GET.get('query')
+        if q:
+            queryset = Tool.objects.filter(Q(name__icontains=q) | Q(description__icontains=q)).select_related(
+                'user').prefetch_related('images')
+        else:
+            queryset = Tool.objects.all().select_related('user').prefetch_related('images')
+        return queryset
 
     def post(self, request, *args, **kwargs):
         serializer = ToolSerializer(data=request.data)

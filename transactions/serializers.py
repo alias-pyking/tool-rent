@@ -1,5 +1,12 @@
 from rest_framework import serializers
 from .models import Transaction
+"""
+TODO: Complete transaction with payment,
+TODO: Credit the seller account with the money as per transaction, 
+TODO: Invalidate the transaction if expiration time is over
+TODO: Implement APIs for user transactions things which he have bought
+TODO: Implement APIs for user transactions things which he have sold
+"""
 
 
 class TransactionSerializer(serializers.ModelSerializer):

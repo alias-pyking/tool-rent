@@ -66,9 +66,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -191,10 +191,12 @@ DEFAULT_FILE_STORAGE = 'tool_rent.storage_backends.MediaStorage'
 
 
 # CORS CONFIGS
-
-CORS_ALLOWED_ORIGINS = (
-    'http://localhost:3000',
-)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://example.com",
+    "https://sub.example.com",
+    "http://127.0.0.1:9000"
+]
 # Authentication backends
 
 AUTHENTICATION_BACKENDS = (

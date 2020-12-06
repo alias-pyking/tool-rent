@@ -43,6 +43,9 @@ class Tool(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 
+    class Meta:
+        ordering = ['-timestamp']
+
     def __str__(self):
         return self.name
 

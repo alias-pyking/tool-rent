@@ -2,8 +2,7 @@ from abc import ABC
 
 from rest_framework import serializers
 from .models import Tool, Picture
-from .constants import STATUS_CHOICES
-from django.forms.widgets import ClearableFileInput
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class ToolSerializer(serializers.ModelSerializer):
@@ -35,7 +34,11 @@ class ToolSerializer(serializers.ModelSerializer):
     @staticmethod
     def create_pictures(images):
         pictures = []
+        print(images)
+        print(type(images[0]))
         for pic in images:
+            if type(pic) is not InMemoryUploadedFile:
+                raise serializers.ValidationError({'images': 'This field should be an array of images'})
             pictures.append(Picture(image=pic, image_alt_text=pic.name))
         return pictures
 
@@ -82,7 +85,7 @@ class ToolSerializer(serializers.ModelSerializer):
     def validate(self, data):
         validation_errors = {}
 
-        if data.get('name') is None or data.get('name') == 'sks':
+        if data.get('name') is None or data.get('name') == '':
             validation_errors.update({
                 'name': 'This field is required'
             })

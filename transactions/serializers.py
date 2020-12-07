@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Transaction
+from .models import Transaction, Wallet
 """
 TODO: Complete transaction with payment,
 TODO: Credit the seller account with the money as per transaction, 
@@ -16,6 +16,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     payment_status = serializers.CharField(read_only=True)
     status = serializers.CharField(read_only=True)
     cost = serializers.DecimalField(read_only=True, decimal_places=4, max_digits=10)
+    selling_time = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Transaction
@@ -36,3 +37,10 @@ class TransactionSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_seller(obj):
         return obj.seller.username
+
+
+class WalletSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Wallet
+        exclude = ('user', )

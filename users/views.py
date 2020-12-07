@@ -35,6 +35,6 @@ class VerifyEmailView(APIView, ConfirmEmailView):
 
 class DetailUpdateProfileView(RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated, IsSelfOrReadOnly)
-    queryset = User.objects.all()
+    queryset = User.objects.all().select_related('wallet')
     lookup_field = 'username'
     serializer_class = ProfileSerializer

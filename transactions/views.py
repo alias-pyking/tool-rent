@@ -18,7 +18,7 @@ class ListCreateToolTransactions(ListCreateAPIView):
     @ensure_tool
     def post(self, request, *args, **kwargs):
         tool = self.kwargs['tool']
-        serializer = TransactionSerializer(data=request)
+        serializer = TransactionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         tool = serializer.save(tool=tool, user=request.user)
         serializer = TransactionSerializer(instance=tool)

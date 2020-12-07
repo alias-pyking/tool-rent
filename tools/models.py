@@ -36,7 +36,7 @@ class Tool(models.Model):
     description = models.TextField(verbose_name='Description')
     quantity = models.IntegerField(verbose_name='Quantity', help_text='How many of these you have ?', null=True,
                                    blank=True)
-    cost_per_day = models.DecimalField(verbose_name='Cost per day in INR.', null=True, max_digits=10, decimal_places=2)
+    cost_per_hour = models.DecimalField(verbose_name='Cost per hour in INR.', null=True, max_digits=10, decimal_places=2)
     status = models.CharField('Status', choices=STATUS_CHOICES, max_length=40,
                               help_text=_('Is this tool available right now or not ?'), null=True, blank=True)
     images = models.ManyToManyField(Picture, help_text=_('Images of this tool.'), blank=True)

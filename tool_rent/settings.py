@@ -190,6 +190,8 @@ STATICFILES_STORAGE = 'tool_rent.storage_backends.StaticStorage'
 
 DEFAULT_FILE_STORAGE = 'tool_rent.storage_backends.MediaStorage'
 
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET']
+STRIPE_PUBLISHABLE_KEY = os.environ['STRIPE_PUBLISH']
 
 # CORS CONFIGS
 CORS_ALLOWED_ORIGINS = [

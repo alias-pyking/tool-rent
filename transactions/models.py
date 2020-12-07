@@ -26,11 +26,16 @@ class Transaction(models.Model):
     expiration_time = models.DateTimeField('When will this transaction expire')
     payment_status = models.CharField('Payment Status', null=True, choices=TRANSACTION_PAYMENT_CHOICES, max_length=50)
     cost = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    cost_per_hour = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     status = models.CharField('Status', null=True, choices=TRANSACTION_STATUS_CHOICES, max_length=50)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('-created', )
+
     def __str__(self):
         return str(self.id)
+
 
 
 class Wallet(models.Model):

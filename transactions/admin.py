@@ -4,9 +4,9 @@ from .models import Transaction, Wallet
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'cost', 'cost_per_hour', 'payment_status', 'status')
 
 
 @admin.register(Wallet)
 class WalletAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'money')

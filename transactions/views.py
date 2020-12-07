@@ -22,4 +22,4 @@ class ListCreateToolTransactions(ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         tool = serializer.save(tool=tool, user=request.user)
         serializer = TransactionSerializer(instance=tool)
-        return Response(data={serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)

@@ -27,7 +27,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         tool = kwargs['tool']
         seller = tool.user
         transaction = Transaction.objects.create(buyer=buyer, seller=seller, tool=tool, payment_status='not_completed',
-                                                 cost=tool.cost, status='on_going', **self.validated_data)
+                                                 cost=tool.cost_per_day, status='on_going', **self.validated_data)
         return transaction
 
     @staticmethod

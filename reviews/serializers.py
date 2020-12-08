@@ -15,7 +15,13 @@ class ReviewSerializer(serializers.ModelSerializer):
         return obj.user.username
 
     def create(self, validated_data, **kwargs):
-        review = Review(user=kwargs['user'], tool=kwargs['tool'], **validated_data)
+        tool = kwargs['tool']
+        total_users_rated = int(tool.total_users_rated) + 1
+        tool.total_stars = float(tool.total_stars + int(validated_data['stars'])) / total_users_rated
+        tool.total_users_rated = total_users_rated
+        tool.rating = float(tool.total_stars/total_users_rated)
+        tool.save()
+        review = Review(user=kwargs['user'], tool=tool, **validated_data)
         return review
 
     def save(self, user, tool):

@@ -1,18 +1,18 @@
 from django.contrib.auth import get_user_model
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework import permissions
 from .serializers import ToolSerializer
 from .models import Tool
 from rest_framework.response import Response
 from rest_framework import status
 from .permissions import IsAuthorOrReadOnly
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from django.db.models import Q
 
 User = get_user_model()
 
 
-class ListCreateToolsView(ListCreateAPIView):
+class ListCreateTools(ListCreateAPIView):
     serializer_class = ToolSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
@@ -34,7 +34,7 @@ class ListCreateToolsView(ListCreateAPIView):
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
-class RetrieveUpdateDeleteToolView(RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateDeleteTool(RetrieveUpdateDestroyAPIView):
     serializer_class = ToolSerializer
     permission_classes = (IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly)
     queryset = Tool.objects.all().select_related('user')
@@ -48,3 +48,12 @@ class RetrieveUpdateDeleteToolView(RetrieveUpdateDestroyAPIView):
         tool = serializer.update(instance=instance, validated_data=serializer.validated_data, images=images)
         serializer = ToolSerializer(tool)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class GetTopRatedTools(ListAPIView):
+    serializer_class = ToolSerializer
+    permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        queryset = Tool.objects.all().order_by('-rating')[:10]
+        return queryset

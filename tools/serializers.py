@@ -78,7 +78,7 @@ class ToolSerializer(serializers.ModelSerializer):
             raise AttributeError('Tool serializer requires you to pass images as kwargs in update and save methods')
         if len(images) == 0 and not update:
             raise serializers.ValidationError({
-                'images':['This field is required']
+                'images': ['This field is required']
             })
         return images
 

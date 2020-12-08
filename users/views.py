@@ -7,11 +7,11 @@ from rest_framework.permissions import AllowAny
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsSelfOrReadOnly
+from .permissions import IsSelfOrReadOnly, IsSelf
 from .models import User
 from .seriailizers import ProfileSerializer
 from tools.serializers import ToolSerializer
-from tools.models import Tool
+from transactions.serializers import TransactionSerializer
 
 
 class VerifyEmailView(APIView, ConfirmEmailView):
@@ -49,3 +49,17 @@ class UserTools(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return user.tool_set.all().prefetch_related('images')
+
+
+class UserTransactions(ListAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = (IsAuthenticated, IsSelf)
+
+    def get_queryset(self):
+        user = self.request.user
+        tr = self.request.GET.get('tr')
+        if tr == 'b':
+            queryset = user.tools_bought.all().select_related('buyer', 'seller')
+        else:
+            queryset = user.tools_sold.all().select_related('buyer', 'seller')
+        return queryset

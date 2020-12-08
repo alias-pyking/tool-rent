@@ -57,3 +57,12 @@ class GetTopRatedTools(ListAPIView):
     def get_queryset(self):
         queryset = Tool.objects.all().order_by('-rating')[:10]
         return queryset
+
+
+class LatestTools(ListAPIView):
+    serializer_class = ToolSerializer
+    permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        queryset = Tool.objects.all().order_by('-timestamp')[:10]
+        return queryset

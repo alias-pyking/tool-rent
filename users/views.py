@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from allauth.account.views import ConfirmEmailView
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
 from dj_rest_auth.registration.serializers import VerifyEmailSerializer
 from rest_framework.permissions import AllowAny
 from django.utils.translation import ugettext_lazy as _
@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsSelfOrReadOnly
 from .models import User
 from .seriailizers import ProfileSerializer
+from tools.serializers import ToolSerializer
+from tools.models import Tool
 
 
 class VerifyEmailView(APIView, ConfirmEmailView):
@@ -38,3 +40,12 @@ class DetailUpdateProfileView(RetrieveUpdateAPIView):
     queryset = User.objects.all().select_related('wallet')
     lookup_field = 'username'
     serializer_class = ProfileSerializer
+
+
+class UserTools(ListAPIView):
+    serializer_class = ToolSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.tool_set.all().prefetch_related('images')

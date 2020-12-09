@@ -71,6 +71,8 @@ class ToolPayment(APIView):
         transaction.payment_status = 'completed'
         tool = transaction.tool
         tool.quantity = int(tool.quantity) - 1
+        if int(tool.quantity) == 0:
+            tool.status = 'not_available'
         tool.save()
         transaction.save()
         seller = transaction.seller

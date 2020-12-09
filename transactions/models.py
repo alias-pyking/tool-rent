@@ -37,7 +37,6 @@ class Transaction(models.Model):
         return str(self.id)
 
 
-
 class Wallet(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     user = models.OneToOneField(to=User, null=True, on_delete=models.CASCADE)

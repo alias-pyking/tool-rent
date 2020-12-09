@@ -57,14 +57,3 @@ class Tool(models.Model):
 
     def get_reviews_url(self):
         return reverse('reviews-list', kwargs={'tool_id': self.id})
-
-
-
-
-"""
-add (star + rating)/2 
-
-1 --> (1, 2, 5, 5 ,5 4) = 22/6 = 
-
-2 --> (3, 3, 3, 3, 3, 3) = 18/
-"""

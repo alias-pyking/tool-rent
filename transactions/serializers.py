@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Transaction, Wallet
+from tools.serializers import ToolSerializer
 
 """
 TODO: Complete transaction with payment,
@@ -13,7 +14,7 @@ TODO: Implement APIs for user transactions things which he have sold
 class TransactionSerializer(serializers.ModelSerializer):
     buyer = serializers.SerializerMethodField()
     seller = serializers.SerializerMethodField()
-    tool = serializers.PrimaryKeyRelatedField(read_only=True)
+    tool = ToolSerializer(read_only=True)
     payment_status = serializers.CharField(read_only=True)
     status = serializers.CharField(read_only=True)
     cost = serializers.DecimalField(read_only=True, decimal_places=2, max_digits=10)

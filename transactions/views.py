@@ -7,7 +7,7 @@ from rest_framework import status
 from tools.utils import ensure_tool
 from django.conf import settings
 from .utils import get_transaction_or_none
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from django.utils.timezone import now
 import stripe
 
@@ -32,10 +32,12 @@ class ListCreateToolTransactions(ListCreateAPIView):
     @ensure_tool
     def post(self, request, *args, **kwargs):
         tool = self.kwargs['tool']
+        if int(tool.quantity) <= 0:
+            raise ValidationError('Cannot rent a tool which have zero quantity')
         serializer = TransactionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        tool = serializer.save(tool=tool, user=request.user)
-        serializer = TransactionSerializer(instance=tool)
+        transaction = serializer.save(tool=tool, user=request.user)
+        serializer = TransactionSerializer(instance=transaction)
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -67,6 +69,9 @@ class ToolPayment(APIView):
         transaction.selling_time = starting_time
         transaction.cost = get_cost(starting_time, expiration_time, cost_per_hour)
         transaction.payment_status = 'completed'
+        tool = transaction.tool
+        tool.quantity = int(tool.quantity) - 1
+        tool.save()
         transaction.save()
         seller = transaction.seller
         seller_wallet = seller.wallet

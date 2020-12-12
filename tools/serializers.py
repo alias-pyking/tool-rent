@@ -48,6 +48,7 @@ class ToolSerializer(serializers.ModelSerializer):
 
     def save(self, user, **kwargs):
         data = self.validated_data
+        print(data)
         images = self.custom_validate(**kwargs)
         tool = self.create(data, user=user)
         tool.save()
@@ -63,6 +64,9 @@ class ToolSerializer(serializers.ModelSerializer):
         instance.quantity = validated_data.get('quantity', instance.quantity)
         instance.cost = validated_data.get('cost', instance.cost)
         instance.status = validated_data.get('status', instance.status)
+        instance.state = validated_data.get('state', instance.state)
+        instance.city = validated_data.get('city', instance.city)
+        instance.town = validated_data.get('town', instance.town)
         instance.save()
         if images:
             pictures = self.create_pictures(images=images)
@@ -81,29 +85,3 @@ class ToolSerializer(serializers.ModelSerializer):
                 'images': ['This field is required']
             })
         return images
-
-    def validate(self, data):
-        validation_errors = {}
-
-        if data.get('name') is None or data.get('name') == '':
-            validation_errors.update({
-                'name': 'This field is required'
-            })
-        if data.get('description') is None or data.get('description') == '':
-            validation_errors.update({
-                'description': 'Description field is required'
-            })
-
-        if data.get('quantity') is None or data.get('quantity') == '':
-            validation_errors.update({
-                'quantity': 'This field is required',
-            })
-
-        if data.get('cost') is None or data.get('cost') == '':
-            validation_errors.update({
-                'cost': 'This field is required'
-            })
-        if validation_errors:
-            raise serializers.ValidationError(validation_errors)
-        return data
-

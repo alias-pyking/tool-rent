@@ -46,6 +46,11 @@ class Tool(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_on = models.DateTimeField(auto_now=True, auto_now_add=False)
 
+    # address fields
+    state = models.CharField('State', max_length=100, null=True, blank=True)
+    city = models.CharField('City', max_length=100, null=True, blank=True)
+    town = models.CharField('Town/village/locality', max_length=100, null=True, blank=True)
+
     class Meta:
         ordering = ['-timestamp']
 

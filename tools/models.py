@@ -40,7 +40,7 @@ class Tool(models.Model):
     status = models.CharField('Status', choices=STATUS_CHOICES, max_length=40,
                               help_text=_('Is this tool available right now or not ?'), null=True, blank=True)
     images = models.ManyToManyField(Picture, help_text=_('Images of this tool.'), blank=True)
-    rating = models.DecimalField(default=0.0, max_digits=10, decimal_places=4)
+    rating = models.DecimalField(default=0.0, max_digits=10, decimal_places=1)
     total_users_rated = models.IntegerField(default=0,)
     total_stars = models.IntegerField(default=0,)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
